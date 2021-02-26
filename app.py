@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_folium import folium_static
 
 '''
 # TaxiFareModel :taxi:
@@ -34,22 +35,18 @@ dropoff_lat = st.number_input('   ')
 '### Number of Passengers'
 passengers = st.number_input('    ',min_value=1, max_value=8, step=1)
 
-#@st.cache
-# def get_map_data():
-#     print('get_map_data called')
-#     return pd.DataFrame(
-#             np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-#             columns=['lat', 'lon']
-#         )
 
-# if st.checkbox('Show map', False):
-#     df = get_map_data()
-
-#     st.map(df)
-# else:
 from PIL import Image
 image = Image.open('ny_map.PNG')
 st.image(image, use_column_width=True)
+
+import folium
+
+m = folium.Map(location=[pickup_lat, pickup_long])
+folium.Marker([pickup_lat, pickup_long], popup='Pickup location').add_to(m)
+folium.Marker([dropoff_lat, dropoff_long], popup='Dropoff location').add_to(m)
+
+folium_static(m)
 
 import requests
 
